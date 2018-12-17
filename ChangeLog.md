@@ -1,7 +1,12 @@
 RPI Grafana ChangeLog
 =================================
 
-# Version 1.3.0 (26/05/2018)
+# Version 1.4.1 (12/17/2018)
+
+- Refactoring GitlabCI
+- Add Grafana 5.2.x
+
+# Version 1.3.0 (05/26/2018)
 
 - Support for ARM and ARM64
 - Add Grafana 5.1.0
