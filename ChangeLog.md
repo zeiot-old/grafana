@@ -1,6 +1,10 @@
 RPI Grafana ChangeLog
 =================================
 
+# Version 1.5.0 (12/18/2018)
+
+- Add Grafana 5.3.4
+
 # Version 1.4.0 (12/17/2018)
 
 - Refactoring GitlabCI
