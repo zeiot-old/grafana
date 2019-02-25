@@ -22,8 +22,8 @@ variables:
   APP_VERSION: "5.4"
 
 stages:
-  - build
-  - deploy
+  - development
+  - release
 
 before_script:
   - docker info
@@ -36,17 +36,19 @@ before_script:
   before_script:
     - docker login -u $DOCKER_USER -p $DOCKER_PASS
 
-# ------------------------------ BUILD LATEST ------------------------------------
+# ------------------------------ LATEST ------------------------------------
 
-build:gitlab-arm-latest:
+dev:gitlab-arm-latest:
   <<: *docker_gitlab
   stage: build
   script:
     - export VERSION=$(grep ' VERSION' ${APP_VERSION}/Dockerfile.arm|awk -F" " '{ print $3 }')
     - echo ${VERSION}
     - docker build -t "$CI_REGISTRY_IMAGE:${VERSION}.arm.latest" ${APP_VERSION} -f ${APP_VERSION}/Dockerfile.arm
+    - docker push "$CI_REGISTRY_IMAGE:${VERSION}.arm.latest"
   only:
     - master
+    - tags
 
 build:gitlab-arm64-latest:
   <<: *docker_gitlab
@@ -55,8 +57,10 @@ build:gitlab-arm64-latest:
     - export VERSION=$(grep ' VERSION' ${APP_VERSION}/Dockerfile.arm64|awk -F" " '{ print $3 }')
     - echo ${VERSION}
     - docker build -t "$CI_REGISTRY_IMAGE:${VERSION}.arm64.latest" ${APP_VERSION} -f ${APP_VERSION}/Dockerfile.arm64
+    - docker push "$CI_REGISTRY_IMAGE:${VERSION}.arm64.latest"
   only:
     - master
+    - tags
 
 build:hub-arm-latest:
   <<: *docker_hub
@@ -65,8 +69,10 @@ build:hub-arm-latest:
     - export VERSION=$(grep ' VERSION' ${APP_VERSION}/Dockerfile.arm|awk -F" " '{ print $3 }')
     - echo ${VERSION}
     - docker build -t "zeiot/$CI_PROJECT_NAME:${VERSION}.arm.latest" ${APP_VERSION} -f ${APP_VERSION}/Dockerfile.arm
+    - docker push "zeiot/$CI_PROJECT_NAME:v${VERSION}.arm.latest"
   only:
     - master
+    - tags
 
 build:hub-arm64-latest:
   <<: *docker_hub
@@ -74,132 +80,54 @@ build:hub-arm64-latest:
   script:
     - export VERSION=$(grep ' VERSION' ${APP_VERSION}/Dockerfile.arm64|awk -F" " '{ print $3 }')
     - echo ${VERSION}
-    - docker build -t "zeiot/$CI_PROJECT_NAME:${VERSION}.arm64.latest" ${APP_VERSION} -f ${APP_VERSION}/Dockerfile.arm64
-  only:
-    - master
-
-# ------------------------------- DEPLOY LATEST -----------------------------------
-
-deploy:gitlab-arm-latest:
-  <<: *docker_gitlab
-  stage: deploy
-  script:
-    - export VERSION=$(grep ' VERSION' ${APP_VERSION}/Dockerfile.arm|awk -F" " '{ print $3 }')
-    - echo ${VERSION}
-    - docker push "$CI_REGISTRY_IMAGE:${VERSION}.arm.latest"
-  only:
-    - master
-
-deploy:gitlab-arm64-latest:
-  <<: *docker_gitlab
-  stage: deploy
-  script:
-    - export VERSION=$(grep ' VERSION' ${APP_VERSION}/Dockerfile.arm64|awk -F" " '{ print $3 }')
-    - echo ${VERSION}
-    - docker push "$CI_REGISTRY_IMAGE:${VERSION}.arm64.latest"
-  only:
-    - master
-
-deploy:hub-arm-latest:
-  <<: *docker_gitlab
-  stage: deploy
-  script:
-    - export VERSION=$(grep ' VERSION' ${APP_VERSION}/Dockerfile.arm|awk -F" " '{ print $3 }')
-    - echo ${VERSION}
-    - docker push "zeiot/$CI_PROJECT_NAME:v${VERSION}.arm.latest"
-  only:
-    - master
-
-deploy:hub-arm64-latest:
-  <<: *docker_gitlab
-  stage: deploy
-  script:
-    - export VERSION=$(grep ' VERSION' ${APP_VERSION}/Dockerfile.arm64|awk -F" " '{ print $3 }')
-    - echo ${VERSION}
+    - docker build -t "zeio/$CI_PROJECT_NAME:${VERSION}.arm64.latest" ${APP_VERSION} -f ${APP_VERSION}/Dockerfile.arm64
     - docker push "zeiot/$CI_PROJECT_NAME:v${VERSION}.arm64.latest"
   only:
     - master
+    - tags
 
-# -------------------------------- BUILD TAGS ------------------------------------
+# ------------------------------- RELEASE -----------------------------------
 
-build:gitlab-arm:
+release:gitlab-arm:
   <<: *docker_gitlab
-  stage: deploy
+  stage: release
   script:
     - export VERSION=$(grep ' VERSION' ${APP_VERSION}/Dockerfile.arm|awk -F" " '{ print $3 }')
     - echo ${VERSION}
-    - docker build -t "$CI_REGISTRY_IMAGE:v${VERSION}.arm" ${APP_VERSION} -f ${APP_VERSION}/Dockerfile.arm
+    - docker build -t "$CI_REGISTRY_IMAGE:${VERSION}.arm" ${APP_VERSION} -f ${APP_VERSION}/Dockerfile.arm
+    - docker push "$CI_REGISTRY_IMAGE:${VERSION}.arm"
   only:
     - tags
 
-build:gitlab-arm64:
+release:gitlab-arm64:
   <<: *docker_gitlab
-  stage: deploy
+  stage: release
   script:
     - export VERSION=$(grep ' VERSION' ${APP_VERSION}/Dockerfile.arm64|awk -F" " '{ print $3 }')
     - echo ${VERSION}
-    - docker build -t "$CI_REGISTRY_IMAGE:v${VERSION}.arm64" ${APP_VERSION} -f ${APP_VERSION}/Dockerfile.arm64
-  only:
-    - tags
-
-build:hub-arm:
-  <<: *docker_hub
-  stage: build
-  script:
-    - export VERSION=$(grep ' VERSION' ${APP_VERSION}/Dockerfile.arm|awk -F" " '{ print $3 }')
-    - echo ${VERSION}
-    - docker build -t "zeiot/$CI_PROJECT_NAME:v${VERSION}.arm" ${APP_VERSION} -f ${APP_VERSION}/Dockerfile.arm
-  only:
-    - tags
-
-build:hub-arm64:
-  <<: *docker_hub
-  stage: build
-  script:
-    - export VERSION=$(grep ' VERSION' ${APP_VERSION}/Dockerfile.arm64|awk -F" " '{ print $3 }')
-    - echo ${VERSION}
-    - docker build -t "zeiot/$CI_PROJECT_NAME:v${VERSION}.arm64" ${APP_VERSION} -f ${APP_VERSION}/Dockerfile.arm64
-  only:
-    - tags
-
-# ----------------------------- DEPLOY TAGS ------------------------------------
-
-deploy:gitlab-arm:
-  <<: *docker_gitlab
-  stage: deploy
-  script:
-    - export VERSION=$(grep ' VERSION' ${APP_VERSION}/Dockerfile.arm|awk -F" " '{ print $3 }')
-    - echo ${VERSION}
-    - docker push "$CI_REGISTRY_IMAGE:v${VERSION}.arm"
-  only:
-    - tags
-
-deploy:gitlab-arm64:
-  <<: *docker_gitlab
-  stage: deploy
-  script:
-    - export VERSION=$(grep ' VERSION' ${APP_VERSION}/Dockerfile.arm64|awk -F" " '{ print $3 }')
-    - echo ${VERSION}
+    - docker build -t "$CI_REGISTRY_IMAGE:${VERSION}.arm64" ${APP_VERSION} -f ${APP_VERSION}/Dockerfile.arm64
     - docker push "$CI_REGISTRY_IMAGE:${VERSION}.arm64"
   only:
     - tags
 
-deploy:hub-arm:
-  <<: *docker_gitlab
-  stage: deploy
+release:hub-arm:
+  <<: *docker_hub
+  stage: release
   script:
     - export VERSION=$(grep ' VERSION' ${APP_VERSION}/Dockerfile.arm|awk -F" " '{ print $3 }')
     - echo ${VERSION}
+    - docker build -t "zeiot/$CI_PROJECT_NAME:${VERSION}.arm" ${APP_VERSION} -f ${APP_VERSION}/Dockerfile.arm
     - docker push "zeiot/$CI_PROJECT_NAME:v${VERSION}.arm"
   only:
     - tags
 
-deploy:hub-arm64:
-  <<: *docker_gitlab
-  stage: deploy
+release:hub-arm64:
+  <<: *docker_hub
+  stage: release
   script:
     - export VERSION=$(grep ' VERSION' ${APP_VERSION}/Dockerfile.arm64|awk -F" " '{ print $3 }')
     - echo ${VERSION}
+    - docker build -t "zeio/$CI_PROJECT_NAME:${VERSION}.arm64" ${APP_VERSION} -f ${APP_VERSION}/Dockerfile.arm64
     - docker push "zeiot/$CI_PROJECT_NAME:v${VERSION}.arm64"
   only:
     - tags
