@@ -96,6 +96,22 @@ deploy:gitlab-arm64-latest:
   only:
     - master
 
+deploy:hub-arm-latest:
+  <<: *docker_gitlab
+  stage: deploy
+  script:
+    - docker push "zeiot/$CI_PROJECT_NAME:v${VERSION}.arm.latest"
+  only:
+    - master
+
+deploy:hub-arm64-latest:
+  <<: *docker_gitlab
+  stage: deploy
+  script:
+    - docker push "zeiot/$CI_PROJECT_NAME:v${VERSION}.arm64.latest"
+  only:
+    - master
+
 # -------------------------------- BUILD TAGS ------------------------------------
 
 build:gitlab-arm:
@@ -146,7 +162,7 @@ deploy:gitlab-arm:
   script:
     - docker push "$CI_REGISTRY_IMAGE:v${VERSION}.arm"
   only:
-    - master
+    - tags
 
 deploy:gitlab-arm64:
   <<: *docker_gitlab
@@ -154,7 +170,7 @@ deploy:gitlab-arm64:
   script:
     - docker push "$CI_REGISTRY_IMAGE:${VERSION}.arm64"
   only:
-    - master
+    - tags
 
 deploy:hub-arm:
   <<: *docker_gitlab
@@ -162,7 +178,7 @@ deploy:hub-arm:
   script:
     - docker push "zeiot/$CI_PROJECT_NAME:v${VERSION}.arm"
   only:
-    - master
+    - tags
 
 deploy:hub-arm64:
   <<: *docker_gitlab
@@ -170,4 +186,4 @@ deploy:hub-arm64:
   script:
     - docker push "zeiot/$CI_PROJECT_NAME:v${VERSION}.arm64"
   only:
-    - master
+    - tags
