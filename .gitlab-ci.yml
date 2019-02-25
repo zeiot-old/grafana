@@ -38,9 +38,9 @@ before_script:
 
 # ------------------------------ LATEST ------------------------------------
 
-dev:gitlab-arm-latest:
+development:gitlab-arm-latest:
   <<: *docker_gitlab
-  stage: build
+  stage: development
   script:
     - export VERSION=$(grep ' VERSION' ${APP_VERSION}/Dockerfile.arm|awk -F" " '{ print $3 }')
     - echo ${VERSION}
@@ -50,9 +50,9 @@ dev:gitlab-arm-latest:
     - master
     - tags
 
-build:gitlab-arm64-latest:
+development:gitlab-arm64-latest:
   <<: *docker_gitlab
-  stage: build
+  stage: development
   script:
     - export VERSION=$(grep ' VERSION' ${APP_VERSION}/Dockerfile.arm64|awk -F" " '{ print $3 }')
     - echo ${VERSION}
@@ -62,9 +62,9 @@ build:gitlab-arm64-latest:
     - master
     - tags
 
-build:hub-arm-latest:
+development:hub-arm-latest:
   <<: *docker_hub
-  stage: build
+  stage: development
   script:
     - export VERSION=$(grep ' VERSION' ${APP_VERSION}/Dockerfile.arm|awk -F" " '{ print $3 }')
     - echo ${VERSION}
@@ -74,9 +74,9 @@ build:hub-arm-latest:
     - master
     - tags
 
-build:hub-arm64-latest:
+development:hub-arm64-latest:
   <<: *docker_hub
-  stage: build
+  stage: development
   script:
     - export VERSION=$(grep ' VERSION' ${APP_VERSION}/Dockerfile.arm64|awk -F" " '{ print $3 }')
     - echo ${VERSION}
