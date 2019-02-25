@@ -128,7 +128,7 @@ release:hub-arm64:
   script:
     - export VERSION=$(grep ' VERSION' ${APP_VERSION}/Dockerfile.arm64|awk -F" " '{ print $3 }')
     - echo ${VERSION}
-    - docker build -t "zeio/$CI_PROJECT_NAME:v${VERSION}.arm64" ${APP_VERSION} -f ${APP_VERSION}/Dockerfile.arm64
+    - docker build -t "zeiot/$CI_PROJECT_NAME:v${VERSION}.arm64" ${APP_VERSION} -f ${APP_VERSION}/Dockerfile.arm64
     - docker push "zeiot/$CI_PROJECT_NAME:v${VERSION}.arm64"
   only:
     - tags
