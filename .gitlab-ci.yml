@@ -44,8 +44,8 @@ development:gitlab-arm-latest:
   script:
     - export VERSION=$(grep ' VERSION' ${APP_VERSION}/Dockerfile.arm|awk -F" " '{ print $3 }')
     - echo ${VERSION}
-    - docker build -t "$CI_REGISTRY_IMAGE:${VERSION}.arm.latest" ${APP_VERSION} -f ${APP_VERSION}/Dockerfile.arm
-    - docker push "$CI_REGISTRY_IMAGE:${VERSION}.arm.latest"
+    - docker build -t "$CI_REGISTRY_IMAGE:v${VERSION}.arm.latest" ${APP_VERSION} -f ${APP_VERSION}/Dockerfile.arm
+    - docker push "$CI_REGISTRY_IMAGE:v${VERSION}.arm.latest"
   only:
     - master
     - tags
@@ -56,8 +56,8 @@ development:gitlab-arm64-latest:
   script:
     - export VERSION=$(grep ' VERSION' ${APP_VERSION}/Dockerfile.arm64|awk -F" " '{ print $3 }')
     - echo ${VERSION}
-    - docker build -t "$CI_REGISTRY_IMAGE:${VERSION}.arm64.latest" ${APP_VERSION} -f ${APP_VERSION}/Dockerfile.arm64
-    - docker push "$CI_REGISTRY_IMAGE:${VERSION}.arm64.latest"
+    - docker build -t "$CI_REGISTRY_IMAGE:v${VERSION}.arm64.latest" ${APP_VERSION} -f ${APP_VERSION}/Dockerfile.arm64
+    - docker push "$CI_REGISTRY_IMAGE:v${VERSION}.arm64.latest"
   only:
     - master
     - tags
@@ -68,7 +68,7 @@ development:hub-arm-latest:
   script:
     - export VERSION=$(grep ' VERSION' ${APP_VERSION}/Dockerfile.arm|awk -F" " '{ print $3 }')
     - echo ${VERSION}
-    - docker build -t "zeiot/$CI_PROJECT_NAME:${VERSION}.arm.latest" ${APP_VERSION} -f ${APP_VERSION}/Dockerfile.arm
+    - docker build -t "zeiot/$CI_PROJECT_NAME:v${VERSION}.arm.latest" ${APP_VERSION} -f ${APP_VERSION}/Dockerfile.arm
     - docker push "zeiot/$CI_PROJECT_NAME:v${VERSION}.arm.latest"
   only:
     - master
@@ -80,7 +80,7 @@ development:hub-arm64-latest:
   script:
     - export VERSION=$(grep ' VERSION' ${APP_VERSION}/Dockerfile.arm64|awk -F" " '{ print $3 }')
     - echo ${VERSION}
-    - docker build -t "zeio/$CI_PROJECT_NAME:${VERSION}.arm64.latest" ${APP_VERSION} -f ${APP_VERSION}/Dockerfile.arm64
+    - docker build -t "zeio/$CI_PROJECT_NAME:v${VERSION}.arm64.latest" ${APP_VERSION} -f ${APP_VERSION}/Dockerfile.arm64
     - docker push "zeiot/$CI_PROJECT_NAME:v${VERSION}.arm64.latest"
   only:
     - master
@@ -94,8 +94,8 @@ release:gitlab-arm:
   script:
     - export VERSION=$(grep ' VERSION' ${APP_VERSION}/Dockerfile.arm|awk -F" " '{ print $3 }')
     - echo ${VERSION}
-    - docker build -t "$CI_REGISTRY_IMAGE:${VERSION}.arm" ${APP_VERSION} -f ${APP_VERSION}/Dockerfile.arm
-    - docker push "$CI_REGISTRY_IMAGE:${VERSION}.arm"
+    - docker build -t "$CI_REGISTRY_IMAGE:v${VERSION}.arm" ${APP_VERSION} -f ${APP_VERSION}/Dockerfile.arm
+    - docker push "$CI_REGISTRY_IMAGE:v${VERSION}.arm"
   only:
     - tags
 
@@ -105,8 +105,8 @@ release:gitlab-arm64:
   script:
     - export VERSION=$(grep ' VERSION' ${APP_VERSION}/Dockerfile.arm64|awk -F" " '{ print $3 }')
     - echo ${VERSION}
-    - docker build -t "$CI_REGISTRY_IMAGE:${VERSION}.arm64" ${APP_VERSION} -f ${APP_VERSION}/Dockerfile.arm64
-    - docker push "$CI_REGISTRY_IMAGE:${VERSION}.arm64"
+    - docker build -t "$CI_REGISTRY_IMAGE:v${VERSION}.arm64" ${APP_VERSION} -f ${APP_VERSION}/Dockerfile.arm64
+    - docker push "$CI_REGISTRY_IMAGE:v${VERSION}.arm64"
   only:
     - tags
 
@@ -116,7 +116,7 @@ release:hub-arm:
   script:
     - export VERSION=$(grep ' VERSION' ${APP_VERSION}/Dockerfile.arm|awk -F" " '{ print $3 }')
     - echo ${VERSION}
-    - docker build -t "zeiot/$CI_PROJECT_NAME:${VERSION}.arm" ${APP_VERSION} -f ${APP_VERSION}/Dockerfile.arm
+    - docker build -t "zeiot/$CI_PROJECT_NAME:v${VERSION}.arm" ${APP_VERSION} -f ${APP_VERSION}/Dockerfile.arm
     - docker push "zeiot/$CI_PROJECT_NAME:v${VERSION}.arm"
   only:
     - tags
@@ -127,7 +127,7 @@ release:hub-arm64:
   script:
     - export VERSION=$(grep ' VERSION' ${APP_VERSION}/Dockerfile.arm64|awk -F" " '{ print $3 }')
     - echo ${VERSION}
-    - docker build -t "zeio/$CI_PROJECT_NAME:${VERSION}.arm64" ${APP_VERSION} -f ${APP_VERSION}/Dockerfile.arm64
+    - docker build -t "zeio/$CI_PROJECT_NAME:v${VERSION}.arm64" ${APP_VERSION} -f ${APP_VERSION}/Dockerfile.arm64
     - docker push "zeiot/$CI_PROJECT_NAME:v${VERSION}.arm64"
   only:
     - tags
