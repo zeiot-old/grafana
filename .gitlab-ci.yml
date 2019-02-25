@@ -1,4 +1,4 @@
-# Copyright (C) 2016-2018 Nicolas Lamirault <nicolas.lamirault@gmail.com>
+# Copyright (C) 2016-2019 Nicolas Lamirault <nicolas.lamirault@gmail.com>
 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ services:
 
 variables:
   DOCKER_DRIVER: overlay2
-  APP_VERSION: "5.3"
+  APP_VERSION: "5.4"
 
 before_script:
   - docker info

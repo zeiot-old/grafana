@@ -1,9 +1,10 @@
-RPI Grafana ChangeLog
+ARM Grafana ChangeLog
 =================================
 
-# Version 1.6.0 (12/18/2018)
+# Version 1.6.0 (02/25/2019)
 
-- Add Grafana 5.4.2
+- Migrate to Balenalib Alpine as Docker base image
+- Add Grafana 5.4.3
 
 # Version 1.5.0 (12/18/2018)
 
