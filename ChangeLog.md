@@ -1,6 +1,10 @@
 ARM Grafana ChangeLog
 =================================
 
+# Version 1.7.0 (03/15/2019)
+
+- Add Grafana 6.0.0
+
 # Version 1.6.0 (02/25/2019)
 
 - Migrate to Balenalib Alpine as Docker base image
